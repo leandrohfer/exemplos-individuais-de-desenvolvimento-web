@@ -1,2 +1,3 @@
-# php-crud-ajax-example
- Exemplo de Operações CRUD em PHP utilizando AJAX jQuery
+# individual-examples-on-web-dev
+
+Exemplos individuais sobre tópicos específicos de programação || Individual examples on specific programming topics

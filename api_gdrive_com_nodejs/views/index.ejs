@@ -1,6 +1,12 @@
 <h1>FORM para Upload de arquivos no Drive</h1>
 
-<form method="post" enctype="multipart/form-data" action="upload">
-  <input type="file" name="file" id="file" />
+<form method="post" enctype="multipart/form-data" action="/upload">
+  <div>
+    <input type="text" name="nome" placeholder="Digite o nome do arquivo" />
+  </div>
+  <div>
+    <input type="file" name="file" id="file" />
+  </div>
+  <br>
   <input type="submit" value="Upload" />
 </form>

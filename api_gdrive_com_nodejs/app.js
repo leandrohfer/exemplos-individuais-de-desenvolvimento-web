@@ -1,5 +1,7 @@
 // *** MÓDULO EXTERNO
-const { google } = require("googleapis");
+const {
+  google
+} = require("googleapis");
 const express = require("express");
 const multer = require("multer");
 
@@ -11,7 +13,9 @@ const path = require("path");
 const fs = require("fs");
 
 // *** DADOS DE ACESSO DE OUTRO ARQUIVO JS
-const { ACESS } = require("./config.js");
+const {
+  ACESS
+} = require("./config.js");
 
 /**
  * *** DADOS DE ACESSO NECESSÁRIOS
@@ -36,20 +40,23 @@ const oauth2Client = new google.auth.OAuth2(
 );
 
 // *** AUTENTICAÇÃO NO SERVIDOR DE AUTORIZAÇÃO DO GOOGLE
-oauth2Client.setCredentials({ refresh_token: ACESS.REFRESH_TOKEN });
+oauth2Client.setCredentials({
+  refresh_token: ACESS.REFRESH_TOKEN
+});
 
 const drive = google.drive({
   version: "v3",
   auth: oauth2Client,
 });
 
-const filePath = path.join(__dirname, "artigo-teste.pdf");
 
-async function uploadFile() {
+async function uploadFile(nameFileOrigin, nameFileNew) {
   try {
+    const filePath = path.join(__dirname, nameFileOrigin);
+
     const response = await drive.files.create({
       requestBody: {
-        name: "documento-teste2.pdf",
+        name: nameFileNew + path.extname(nameFileOrigin),
         mimeType: "application/pdf",
       },
       media: {
@@ -124,7 +131,26 @@ async function searchFile() {
 }
 // searchFile();
 
-const upload = multer({ dest: "uploads/" });
+const storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "uploads/");
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.originalname);
+  }
+})
+
+const upload = multer({
+  storage
+});
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+app.use(express.json());
 
 app.set("view engine", "ejs");
 
@@ -133,7 +159,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/upload", upload.single("file"), (req, res) => {
-  res.send("Arquivo recebido!");
+  res.send("Arquivo recebido! " + req.body.nome);
+  console.log(req.body);
 });
 
 app.listen(8080, () => {

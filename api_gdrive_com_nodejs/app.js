@@ -1,5 +1,10 @@
 // *** MÓDULO EXTERNO
 const { google } = require("googleapis");
+const express = require("express");
+const multer = require("multer");
+
+// *** INICIALIZAÇÃO DO EXPRESS
+const app = express();
 
 // *** CORE MODULES
 const path = require("path");
@@ -71,7 +76,7 @@ async function deleteFile() {
     console.log(error.message);
   }
 }
-deleteFile();
+// deleteFile();
 
 async function generatePublicUrl() {
   try {
@@ -118,3 +123,19 @@ async function searchFile() {
   }
 }
 // searchFile();
+
+const upload = multer({ dest: "uploads/" });
+
+app.set("view engine", "ejs");
+
+app.get("/", (req, res) => {
+  res.render("index");
+});
+
+app.post("/upload", upload.single("file"), (req, res) => {
+  res.send("Arquivo recebido!");
+});
+
+app.listen(8080, () => {
+  console.log("Servidor rodando!");
+});

@@ -129,7 +129,7 @@ async function searchFile() {
     throw err;
   }
 }
-// searchFile();
+searchFile();
 
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {

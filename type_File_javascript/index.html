@@ -1,0 +1,24 @@
+<input type="file" multiple="" />
+
+<button onclick="exemplo()">Remover</button>
+<button onclick="ver()">Ver Arquivos</button>
+
+<script>
+    var input = document.querySelector('input');
+
+    function exemplo() {
+        var dataT = new DataTransfer();
+
+        for (var i = 0; i < input.files.length; i++) {
+            // No caso se o nome do arquivo que está não input for imagem.jpg
+            if (input.files[i].name !== 'Guia_-_LGPD.pdf') {
+                dataT.items.add(input.files[i]);
+            }
+        }
+        input.files = dataT.files;
+    }
+
+    function ver() {
+        console.log(input.files);
+    }
+</script>
